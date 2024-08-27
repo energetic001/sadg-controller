@@ -14,9 +14,11 @@ WORKDIR /ws/src
 RUN git clone --recurse-submodules https://github.com/alexberndt/sadg-controller.git
 WORKDIR /ws
 RUN rosdep install --from-paths src --ignore-src -r -y
-RUN python3 -m pip install -r src/sadg-controller/requirements.txt
-RUN colcon build
+RUN python3 -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r src/sadg-controller/requirements.txt
 
+RUN colcon build --cmake-clean-first
+
+VOLUME /ws/src/sadg-controller
 RUN rm -rf /var/lib/apt/lists/*
 
 COPY entrypoint.sh /ws/entrypoint.sh
